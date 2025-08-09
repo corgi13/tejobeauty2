@@ -1,13 +1,17 @@
 import Link from 'next/link';
 import { MovingBorder } from '@/components/ui/MovingBorder';
 import { getTranslations } from 'next-intl/server';
+import { organizationJsonLd, websiteJsonLd } from '@/lib/seo';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'home' });
+  const site = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
   return (
     <main className="min-h-screen">
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd(site)) }} />
+      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd(site)) }} />
       <section className="relative isolate overflow-hidden">
         <div className="mx-auto max-w-6xl px-6 py-16 lg:py-24">
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl leading-tight text-onyx">
