@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { locale: string } }) {
+export async function GET(req: NextRequest, { params }: { params: any }) {
   const site = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const api = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
   const l = params.locale;

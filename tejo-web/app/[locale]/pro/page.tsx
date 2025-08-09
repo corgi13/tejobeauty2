@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 
-export default async function ProPage({ params }: { params: { locale: string } }) {
+export default async function ProPage({ params }: { params: any }) {
   const t = await getTranslations({ locale: params.locale, namespace: 'pro' });
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">

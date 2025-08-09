@@ -7,16 +7,18 @@ async function getProducts(slug: string, searchParams: Record<string,string | st
   return res.data as Array<{ slug: string; name: string; price: string; images: string[] }>;
 }
 
-export default async function CategoryPage({ params, searchParams }: { params: { slug: string }; searchParams: Record<string, string | string[] | undefined> }) {
-  const products = await getProducts(params.slug, searchParams).catch(() => []);
+export default async function CategoryPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const { slug } = await params;
+  const sp = await searchParams;
+  const products = await getProducts(slug, sp).catch(() => []);
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
-      <h1 className="font-heading text-3xl capitalize">{params.slug}</h1>
+      <h1 className="font-heading text-3xl capitalize">{slug}</h1>
       <div className="mt-4 flex gap-3">
         <form className="flex gap-2">
-          <input name="brand" placeholder="Brand" className="rounded border px-3 py-2" defaultValue={(searchParams.brand as string) || ''} />
-          <input name="min" placeholder="Min €" className="w-24 rounded border px-3 py-2" defaultValue={(searchParams.min as string) || ''} />
-          <input name="max" placeholder="Max €" className="w-24 rounded border px-3 py-2" defaultValue={(searchParams.max as string) || ''} />
+          <input name="brand" placeholder="Brand" className="rounded border px-3 py-2" defaultValue={(sp.brand as string) || ''} />
+          <input name="min" placeholder="Min €" className="w-24 rounded border px-3 py-2" defaultValue={(sp.min as string) || ''} />
+          <input name="max" placeholder="Max €" className="w-24 rounded border px-3 py-2" defaultValue={(sp.max as string) || ''} />
           <button className="rounded bg-onyx px-4 py-2 text-white" type="submit">Filter</button>
         </form>
       </div>

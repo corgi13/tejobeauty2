@@ -6,7 +6,7 @@ async function getPost(slug: string) {
   return res.data as { title: string; content: string; image?: string };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: any }) {
   const post = await getPost(params.slug).catch(() => null);
   if (!post) return notFound();
   return (

@@ -3,12 +3,15 @@ import { notFound } from 'next/navigation';
 import AddToCartClient from './AddToCartClient';
 import { Gallery } from '@/components/pdp/Gallery';
 
+type Product = { id: string; name: string; slug: string; price: number; images: string[] };
+
 async function getProduct(slug: string) {
-  return serverApi(`/products/${slug}`, undefined, ['products']);
+  return serverApi<Product>(`/products/${slug}`, undefined, ['products']);
 }
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
-  const p = await getProduct(params.slug).catch(() => null);
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const p = await getProduct(slug).catch(() => null as any as Product | null);
   if (!p) return notFound();
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">

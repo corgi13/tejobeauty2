@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { MovingBorder } from '@/components/ui/MovingBorder';
 import { getTranslations } from 'next-intl/server';
 
-export default async function HomePage({ params }: { params: { locale: string } }) {
-  const t = await getTranslations({ locale: params.locale, namespace: 'home' });
-  const locale = params.locale;
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'home' });
 
   return (
     <main className="min-h-screen">
