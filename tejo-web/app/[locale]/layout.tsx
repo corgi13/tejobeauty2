@@ -3,15 +3,14 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Providers } from '@/components/Providers';
 import { Header } from '@/components/layout/Header';
-import type { Metadata } from 'next';
 
 export const dynamic = 'force-static';
 
-export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.locale, namespace: 'seo' });
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'seo' });
   const siteName = 'Tejo-Beauty';
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
     title: {
       default: `${siteName} — ${t('defaultTitle')}`,
       template: `%s — ${siteName}`,
@@ -19,18 +18,19 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     description: t('defaultDescription'),
     applicationName: siteName,
     alternates: {
-      canonical: `/${params.locale}`,
+      canonical: `/${locale}`,
     },
     icons: {
       icon: '/favicon.ico',
     },
-  };
+  } as any;
 }
 
-export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: { locale: string } }) {
+export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const messages = await getMessages();
   return (
-    <html lang={params.locale}>
+    <html lang={locale}>
       <body className="min-h-screen font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           <Providers>

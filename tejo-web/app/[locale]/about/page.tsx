@@ -8,7 +8,7 @@ const TAGLINES = [
   'Tejo-Beauty. A touch of divine.',
 ];
 
-export default async function AboutPage({ params }: { params: { locale: string } }) {
+export default async function AboutPage({ params }: { params: any }) {
   const t = await getTranslations({ locale: params.locale, namespace: 'about' });
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">

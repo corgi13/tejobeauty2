@@ -1,11 +1,5 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
+const nextConfig = {
   output: 'standalone',
-  experimental: {
-    ppr: true,
-    reactCompiler: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -17,7 +11,7 @@ const nextConfig: NextConfig = {
   i18n: {
     locales: ['hr', 'en', 'de', 'pt', 'es', 'it'],
     defaultLocale: 'en',
-    localeDetection: true,
+    localeDetection: false,
   },
 };
 

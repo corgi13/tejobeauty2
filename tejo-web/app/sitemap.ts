@@ -1,6 +1,4 @@
-import type { MetadataRoute } from 'next';
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default async function sitemap() {
   const site = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   const locales = ['hr', 'en', 'de', 'pt', 'es', 'it'];
   const now = new Date();
@@ -11,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site}/${l}/blog`, lastModified: now },
     { url: `${site}/${l}/categories/skincare`, lastModified: now },
   ]);
-  return base;
+  return base as any;
 }
 
 
