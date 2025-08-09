@@ -1,0 +1,16 @@
+[Unit]
+Description=Tejo-Beauty Frontend (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/tejo-web
+Environment=PORT=3000
+ExecStart=/usr/bin/node ./.next/standalone/server.js
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
+

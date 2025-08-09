@@ -1,0 +1,14 @@
+[Unit]
+Description=Meilisearch
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/meilisearch --http-addr 127.0.0.1:7700 --env production --master-key ${MEILI_MASTER_KEY}
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
+

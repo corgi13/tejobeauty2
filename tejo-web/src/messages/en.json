@@ -1,0 +1,31 @@
+{
+  "seo": {
+    "defaultTitle": "Beauty with meaning",
+    "defaultDescription": "Tejo-Beauty is your trusted partner for professional care and aesthetic excellence."
+  },
+  "home": {
+    "hero": {
+      "title": "Beauty is not a luxury. Beauty is a standard.",
+      "subtitle": "Tejo-Beauty is your trusted partner in the world of professional care and aesthetic excellence.",
+      "ctaPrimary": "Shop All Products",
+      "ctaSecondary": "Become a professional partner"
+    },
+    "sections": {
+      "categories": "Shop by category"
+    }
+  }
+  ,
+  "about": {
+    "title": "About Tejo-Beauty",
+    "fullText": "Tejo-Beauty is a brand that defines a new level of beauty standards. Our focus is expertise, quality and experience — for end users and beauty professionals. Our philosophy is based on the availability of highly effective products that meet the highest aesthetic and functional criteria. Whether you are curating your own beauty corner or equipping a salon, Tejo-Beauty is the place where expertise and style become one."
+  },
+  "pro": {
+    "title": "For Professionals & Salons",
+    "subtitle": "Join our professional program for better pricing, support and exclusive access.",
+    "benefits": ["Expert selection","Tiered pricing & loyalty","Priority support","Educational resources"],
+    "contact": { "title": "Contact", "desc": "Reach us for partnership details." },
+    "cta": "Request partnership"
+  }
+}
+
+

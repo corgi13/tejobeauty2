@@ -1,0 +1,19 @@
+{
+  "seo": {
+    "defaultTitle": "Schönheit mit Bedeutung",
+    "defaultDescription": "Tejo-Beauty ist Ihr vertrauenswürdiger Partner für professionelle Pflege und ästhetische Exzellenz."
+  },
+  "home": {
+    "hero": {
+      "title": "Schönheit ist kein Luxus. Schönheit ist Standard.",
+      "subtitle": "Tejo-Beauty ist Ihr vertrauenswürdiger Partner in der Welt der professionellen Pflege und ästhetischen Exzellenz.",
+      "ctaPrimary": "Alle Produkte shoppen",
+      "ctaSecondary": "Werden Sie professioneller Partner"
+    },
+    "sections": {
+      "categories": "Nach Kategorie shoppen"
+    }
+  }
+}
+
+

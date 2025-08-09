@@ -1,0 +1,14 @@
+.next
+node_modules
+.env
+.env.*
+dist
+out
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+*.local
+coverage
+

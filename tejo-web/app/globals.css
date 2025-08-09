@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-gold: #D4AF37;
+  --color-cream: #F5EFE6;
+  --color-blush: #F9DDE5;
+  --color-onyx: #0B0B0B;
+}
+
+html, body {
+  height: 100%;
+  background: white;
+  color: #111;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+/* Font faces (place your self-hosted woff2 files under public/fonts and preload in layout) */
+/* Example:
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/PlayfairDisplay-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+*/
+
+.moving-border {
+  position: relative;
+}
+.moving-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: var(--mb-radius, 14px);
+  background: var(--mb-bg, theme('backgroundImage.border-gradient'));
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border var(--mb-duration,6s) linear infinite;
+}
+
+/* Glow helpers */
+.glow {
+  box-shadow: 0 0 0 rgba(212,175,55,0.0);
+  animation: glow 3s ease-in-out infinite;
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px dashed var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+

@@ -1,0 +1,16 @@
+[Unit]
+Description=Tejo-Beauty Backend (NestJS)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/tejo-api
+Environment=PORT=4000
+ExecStart=/usr/bin/node dist/main.js
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,19 @@
+{
+  "seo": {
+    "defaultTitle": "Belleza con significado",
+    "defaultDescription": "Tejo-Beauty es tu socio de confianza para el cuidado profesional y la excelencia estética."
+  },
+  "home": {
+    "hero": {
+      "title": "La belleza no es un lujo. La belleza es un estándar.",
+      "subtitle": "Tejo-Beauty es tu socio de confianza en el mundo del cuidado profesional y la excelencia estética.",
+      "ctaPrimary": "Ver todos los productos",
+      "ctaSecondary": "Conviértete en socio profesional"
+    },
+    "sections": {
+      "categories": "Comprar por categoría"
+    }
+  }
+}
+
+
