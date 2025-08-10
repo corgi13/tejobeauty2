@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/store/cart';
 import { useWishlist } from '@/store/wishlist';
-import { MovingBorder } from './MovingBorder';
+import { MovingBorder } from './moving-border';
 import { StarIcon, HeartIcon, EyeIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 

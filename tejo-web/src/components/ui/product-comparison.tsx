@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { MovingBorder } from './moving-border';
+import { BackgroundGradient } from './background-gradient';
 
 interface ProductSpec {
   name: string;

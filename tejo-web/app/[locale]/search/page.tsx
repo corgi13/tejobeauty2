@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ProductCard } from '@/components/ui/ProductCard';
-import { MovingBorder } from '@/components/ui/MovingBorder';
+import { MovingBorder } from '@/components/ui/moving-border';
 import { api } from '@/lib/api';
 import { 
   MagnifyingGlassIcon, 

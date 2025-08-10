@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { MovingBorder } from '@/components/ui/MovingBorder';
+import { MovingBorder } from '@/components/ui/moving-border';
 import { api } from '@/lib/api';
 
 interface RegisterForm {
