@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { locales } from '../../i18n';
 // Temporary workaround for Next 15 typing expecting Promise params in generated types
-// We'll assert the type locally to satisfy the generic constraint.
+// We'll assert the type locally to satisfy the generated type.
 import { HomePageClient } from '@/components/pages/HomePageClient';
 
 // Next's inferred PageProps appears to expect a Promise for params due to prior incorrect typing.
@@ -19,17 +19,26 @@ export default async function HomePage(props: LocalePageProps) {
   const { locale } = (props.params as LocalePageParams);
   const t = await getTranslations({ locale, namespace: 'home' });
 
-  // Get actual translation values for the keys we need
+  // Helper function to get translation with fallback
+  const getTranslation = (key: string, fallback: string) => {
+    try {
+      return t(key);
+    } catch {
+      return fallback;
+    }
+  };
+
+  // Get actual translation values for the keys we need with fallbacks
   const translations = {
-    heroTitle: await t('hero.title'),
-    heroSubtitle: await t('hero.subtitle'),
-    heroDescription: await t('hero.description'),
-    exploreButton: await t('hero.exploreButton'),
-    learnMoreButton: await t('hero.learnMoreButton'),
-    categoriesTitle: await t('categories.title'),
-    featuresTitle: await t('features.title'),
-    statsTitle: await t('stats.title'),
-    statsDescription: await t('stats.description'),
+    heroTitle: getTranslation('hero.title', 'Prirodna ljepota'),
+    heroSubtitle: getTranslation('hero.subtitle', 'prirodno dostavljena'),
+    heroDescription: getTranslation('hero.description', 'Otkrijte najbolje prirodne proizvode za njegu lica, tijela i kose. Premium kvaliteta za vašu ljepotu i dobrobit.'),
+    exploreButton: getTranslation('hero.exploreButton', 'Istraži proizvode'),
+    learnMoreButton: getTranslation('hero.learnMoreButton', 'Saznaj više'),
+    categoriesTitle: getTranslation('categories.title', 'Kategorije proizvoda'),
+    featuresTitle: getTranslation('features.title', 'Zašto Tejo-Beauty?'),
+    statsTitle: getTranslation('stats.title', 'Iskusite razliku'),
+    statsDescription: getTranslation('stats.description', 'Pridružite se tisućama zadovoljnih kupaca koji su već otkrili snagu prirodnih sastojaka u njihovoj rutini ljepote.'),
   };
 
   return <HomePageClient translations={translations} />;
