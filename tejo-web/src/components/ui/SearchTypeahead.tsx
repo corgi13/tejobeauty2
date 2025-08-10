@@ -14,7 +14,7 @@ export function SearchTypeahead() {
       if (mounted) setResults(d);
     }).catch(() => mounted && setResults([]));
     return () => { mounted = false; };
-  }, [debounced]);
+  }, [debounced, api]);
 
   return (
     <div className="relative">

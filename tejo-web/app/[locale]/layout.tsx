@@ -2,7 +2,11 @@ import '../globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Providers } from '@/components/Providers';
+<<<<<<< Current (Your changes)
 import { Header } from '@/components/layout/Header';
+=======
+import { Header } from '@/components/ui/Header';
+>>>>>>> Incoming (Background Agent changes)
 
 export const dynamic = 'force-static';
 

@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,182 +11,244 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(uuid())
-  name           String?
-  email          String   @unique
-  passwordHash   String
-  isAdmin        Boolean  @default(false)
-  customerGroup  String?
-  createdAt      DateTime @default(now())
-  lifetimeSpend  Decimal  @default(0)
-  reviews        Review[]
-  orders         Order[]
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  firstName     String?
+  lastName      String?
+  phone         String?
+  address       String?
+  city          String?
+  postalCode    String?
+  country       String?
+  isAdmin       Boolean   @default(false)
+  isVerified    Boolean   @default(false)
+  verificationToken String? @unique
+  resetToken    String?   @unique
+  resetTokenExpiry DateTime?
+  customerGroup String?
+  loyaltyPoints Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  orders        Order[]
+  reviews       Review[]
+  auditLogs     AuditLog[]
+  recentlyViewed RecentlyViewed[]
 }
 
-model Product {
-  id              String    @id @default(uuid())
-  name            String
-  slug            String    @unique
-  description     String
-  price           Decimal
-  images          String[]
-  category        String
-  subcategory     String?
-  brand           String
-  countInStock    Int       @default(0)
-  rating          Decimal   @default(0)
-  numReviews      Int       @default(0)
-  attributes      Json?
-  translations    Json?
-  howToUse        Json?
-  ingredients     Json?
-  badges          String[]
-  metaTitle       Json?
-  metaDescription Json?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  variants        ProductVariant[]
-  reviews         Review[]
-}
-
-model ProductVariant {
-  id         String   @id @default(uuid())
-  productId  String
-  product    Product  @relation(fields: [productId], references: [id])
-  sku        String
-  name       String
-  price      Decimal?
-  stock      Int      @default(0)
-  attributes Json?
-  images     String[]
-}
-
-model Review {
-  id               String   @id @default(uuid())
-  rating           Int
-  comment          String
-  userId           String
-  productId        String
-  createdAt        DateTime @default(now())
-  imageUrls        String[]
-  verifiedPurchase Boolean  @default(false)
-  approved         Boolean  @default(false)
-  user             User     @relation(fields: [userId], references: [id])
-  product          Product  @relation(fields: [productId], references: [id])
-}
-
-model BlogPost {
-  id           String   @id @default(uuid())
-  title        String
-  slug         String   @unique
-  content      String
-  excerpt      String
-  image        String?
-  tags         String[]
-  translations Json?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model Coupon {
-  id         String   @id @default(uuid())
-  code       String   @unique
-  type       String
-  value      Decimal?
-  startsAt   DateTime?
-  endsAt     DateTime?
-  active     Boolean  @default(true)
-  usageLimit Int?
-  usedCount  Int      @default(0)
-}
-
-model Order {
-  id             String   @id @default(uuid())
-  userId         String?
-  status         String   @default("created")
-  total          Decimal  @default(0)
-  currency       String
-  paymentProvider String
-  paymentId      String?
-  shippingAddress Json
-  billingAddress  Json
-  itemsTotal     Decimal  @default(0)
-  shippingTotal  Decimal  @default(0)
-  discountTotal  Decimal  @default(0)
-  taxTotal       Decimal  @default(0)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  items          OrderItem[]
-  user           User?    @relation(fields: [userId], references: [id])
-}
-
-model OrderItem {
-  id         String   @id @default(uuid())
-  orderId    String
-  productId  String
-  variantId  String?
-  name       String
-  sku        String?
-  price      Decimal
-  qty        Int
-  image      String?
-  attributes Json?
-  order      Order    @relation(fields: [orderId], references: [id])
-}
-
-model InventoryMovement {
-  id         String   @id @default(uuid())
-  productId  String
-  variantId  String?
-  type       String
-  qty        Int
-  refType    String
-  refId      String?
-  createdAt  DateTime @default(now())
-}
-
-model B2BPrice {
-  id         String  @id @default(uuid())
-  productId  String
-  variantId  String?
-  customerGroup String
-  price      Decimal
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  isVerified Boolean @default(false)
+  verificationToken String? @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id           String   @id @default(uuid())
-  slug         String   @unique
-  name         String
-  description  String
-  parentId     String?
-  translations Json
-  image        String?
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  parentId    String?
+  parent      Category? @relation("CategoryToCategory", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryToCategory")
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
-model PartnerRequest {
-  id        String   @id @default(uuid())
-  name      String
-  company   String
-  email     String
-  phone     String?
-  message   String
-  status    String   @default("new")
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  price       Decimal   @db.Decimal(10, 2)
+  comparePrice Decimal? @db.Decimal(10, 2)
+  images      String[]
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  brand       String?
+  sku         String?   @unique
+  stock       Int       @default(0)
+  weight      Decimal?  @db.Decimal(8, 2)
+  dimensions  String?
+  isActive    Boolean   @default(true)
+  isFeatured  Boolean   @default(false)
+  isNew       Boolean   @default(false)
+  isOnSale    Boolean   @default(false)
+  rating      Decimal   @db.Decimal(3, 2) @default(0)
+  reviewCount Int       @default(0)
+  howToUse    String?
+  ingredients String?
+  tags        String[]
+  metaTitle   String?
+  metaDescription String?
+  searchKeywords String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  variants    ProductVariant[]
+  orderItems  OrderItem[]
+  reviews     Review[]
+  recentlyViewed RecentlyViewed[]
+}
+
+model ProductVariant {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sku        String   @unique
+  name       String   // e.g., "50ml", "Red", "Large"
+  price      Decimal? @db.Decimal(10, 2) // Override product price if different
+  stock      Int      @default(0)
+  weight     Decimal? @db.Decimal(8, 2)
+  attributes Json     // { size: "50ml", color: "Red", scent: "Lavender" }
+  images     String[]
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  orderItems OrderItem[]
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id])
+  email         String
+  firstName     String
+  lastName      String
+  phone         String?
+  address       String
+  city          String
+  postalCode    String
+  country       String
+  status        OrderStatus @default(PENDING)
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentMethod String
+  subtotal      Decimal     @db.Decimal(10, 2)
+  discount      Decimal     @db.Decimal(10, 2) @default(0)
+  shipping      Decimal     @db.Decimal(10, 2) @default(0)
+  total         Decimal     @db.Decimal(10, 2)
+  stripeSessionId String?
+  molliePaymentId String?
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id])
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  variantId   String?
+  variant     ProductVariant? @relation(fields: [variantId], references: [id])
+  quantity    Int
+  price       Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  rating    Int
+  title     String?
+  comment   String?
+  images    String[]
+  verifiedPurchase Boolean @default(false)
+  approved  Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Settings {
-  id                    String  @id @default(uuid())
-  freeShippingThreshold Decimal @default(0)
-  loyaltyTiers          Json
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  excerpt   String?
+  content   String
+  image     String?
+  author    String?
+  tags      String[]
+  isPublished Boolean @default(false)
+  publishedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Coupon {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  type        String   // percent, fixed, free_shipping
+  value       Decimal  @db.Decimal(10, 2)
+  minAmount   Decimal? @db.Decimal(10, 2)
+  maxUses     Int?
+  usedCount   Int      @default(0)
+  validFrom   DateTime @default(now())
+  validUntil  DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model WebhookEvent {
-  id         String   @id @default(uuid())
-  provider   String
-  eventId    String   @unique
-  processedAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  provider  String   // stripe, mollie
+  eventId   String   @unique
+  eventType String
+  processed Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  resource  String
+  resourceId String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+}
+
+model RecentlyViewed {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+<<<<<<< Current (Your changes)
 model AuditLog {
   id        String   @id @default(uuid())
   actorId   String?
@@ -193,3 +258,5 @@ model AuditLog {
   createdAt DateTime @default(now())
 }
 
+=======
+>>>>>>> Incoming (Background Agent changes)

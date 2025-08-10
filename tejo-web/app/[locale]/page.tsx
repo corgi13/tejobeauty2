@@ -1,47 +1,113 @@
-import Link from 'next/link';
-import { MovingBorder } from '@/components/ui/MovingBorder';
 import { getTranslations } from 'next-intl/server';
-import { organizationJsonLd, websiteJsonLd } from '@/lib/seo';
+import Link from 'next/link';
+import { NewsletterSignup } from '@/components/ui/NewsletterSignup';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'home' });
-  const site = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
   return (
-    <main className="min-h-screen">
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd(site)) }} />
-      <script type="application/ld+json" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd(site)) }} />
-      <section className="relative isolate overflow-hidden">
-        <div className="mx-auto max-w-6xl px-6 py-16 lg:py-24">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl leading-tight text-onyx">
-            {t('hero.title')}
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-neutral-600">
-            {t('hero.subtitle')}
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <MovingBorder borderRadius={16} duration={7000}>
-              <Link href={`/${locale}/categories/skincare`} className="moving-border inline-flex items-center justify-center rounded-[14px] bg-onyx px-6 py-3 text-white hover:bg-black transition">
-                {t('hero.ctaPrimary')}
+    <main>
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-cream to-blush py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="font-heading text-5xl md:text-6xl font-bold text-onyx mb-6">
+              Prirodna ljepota
+              <br />
+              <span className="text-gold">prirodno dostavljena</span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Otkrijte najbolje prirodne proizvode za njegu lica, tijela i kose. 
+              Premium kvaliteta za vašu ljepotu i dobrobit.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link 
+                href="/categories" 
+                className="inline-flex items-center px-8 py-4 bg-onyx text-white rounded-xl font-medium hover:bg-onyx/90 transition-colors"
+              >
+                Istraži proizvode
               </Link>
-            </MovingBorder>
-            <Link href={`/${locale}/pro`} className="inline-flex items-center justify-center rounded-xl border border-gold px-6 py-3 text-onyx hover:shadow-[0_0_24px_rgba(212,175,55,0.35)] transition">
-              {t('hero.ctaSecondary')}
-            </Link>
+              <Link 
+                href="/about" 
+                className="inline-flex items-center px-8 py-4 border-2 border-onyx text-onyx rounded-xl font-medium hover:bg-onyx hover:text-white transition-colors"
+              >
+                Saznaj više
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Category grid, Featured, Why Tejo, Storytelling, Testimonials, IG, Newsletter — stubs */}
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <h2 className="font-heading text-2xl">{t('sections.categories')}</h2>
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {['Skincare','Nails','Hair','Spa & Wellness','Make-up','Alati & uređaji','Higijena','Poklon setovi'].map((name, idx) => (
-            <div key={name} className="rounded-xl border border-neutral-200 p-4 hover:shadow-lg transition">
-              <span className="font-medium">{name}</span>
-            </div>
-          ))}
+      {/* Categories Grid */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="font-heading text-3xl font-bold text-onyx text-center mb-12">
+            Kategorije proizvoda
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { href: '/categories/face', title: 'Lice', description: 'Nega lica', icon: '✨' },
+              { href: '/categories/body', title: 'Tijelo', description: 'Nega tijela', icon: '🧴' },
+              { href: '/categories/hair', title: 'Kosa', description: 'Nega kose', icon: '💇‍♀️' },
+              { href: '/categories/wellness', title: 'Wellness', description: 'Dobrobit', icon: '🧘‍♀️' },
+            ].map((category) => (
+              <Link
+                key={category.href}
+                href={category.href}
+                className="group block p-6 bg-white rounded-xl border border-gray-200 hover:border-gold hover:shadow-lg transition-all duration-300"
+              >
+                <div className="text-4xl mb-4">{category.icon}</div>
+                <h3 className="font-heading text-xl font-semibold text-onyx mb-2 group-hover:text-gold transition-colors">
+                  {category.title}
+                </h3>
+                <p className="text-gray-600">{category.description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <NewsletterSignup />
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="font-heading text-3xl font-bold text-onyx text-center mb-12">
+            Zašto Tejo-Beauty?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: '🌿',
+                title: '100% Prirodno',
+                description: 'Svi naši proizvodi su napravljeni od prirodnih sastojaka bez štetnih kemikalija.',
+              },
+              {
+                icon: '🚚',
+                title: 'Besplatna dostava',
+                description: 'Besplatna dostava za sve narudžbe iznad 50€ u cijeloj Hrvatskoj.',
+              },
+              {
+                icon: '💎',
+                title: 'Premium kvaliteta',
+                description: 'Proizvodi najviše kvalitete koji su testirani i odobreni od stručnjaka.',
+              },
+            ].map((feature, index) => (
+              <div key={index} className="text-center">
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="font-heading text-xl font-semibold text-onyx mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </main>
