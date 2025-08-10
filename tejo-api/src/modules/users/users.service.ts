@@ -9,7 +9,7 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  create(data: { name?: string; email: string; passwordHash: string; isAdmin?: boolean }) {
+  create(data: { firstName?: string; lastName?: string; email: string; password: string; isAdmin?: boolean }) {
     return this.prisma.user.create({ data });
   }
 

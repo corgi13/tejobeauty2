@@ -11,28 +11,6 @@ import { randomBytes } from 'crypto';
 
 @Injectable()
 export class AuthService {
-<<<<<<< Current (Your changes)
-  constructor(private users: UsersService, private jwt: JwtService) {}
-
-  async validate(email: string, password: string) {
-    const user = await this.users.findByEmail(email);
-    if (!user) throw new UnauthorizedException('Invalid credentials');
-    const ok = await argon2.verify(user.passwordHash, password);
-    if (!ok) throw new UnauthorizedException('Invalid credentials');
-    return user;
-  }
-
-  signTokens(userId: string) {
-    const access = this.jwt.sign(
-      { sub: userId },
-      { secret: process.env.JWT_ACCESS_SECRET!, expiresIn: '30m' },
-    );
-    const refresh = this.jwt.sign(
-      { sub: userId, type: 'refresh' },
-      { secret: process.env.JWT_REFRESH_SECRET!, expiresIn: '30d' },
-    );
-    return { access, refresh };
-=======
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
@@ -304,28 +282,6 @@ export class AuthService {
     // TODO: Implement actual email sending
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
     console.log(`Password reset email sent to ${user.email}: ${resetUrl}`);
-    
-    // In production, you would use a service like SendGrid, Mailgun, or AWS SES
-    /*
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    
-    const msg = {
-      to: user.email,
-      from: 'noreply@tejo-beauty.com',
-      subject: 'Reset your Tejo-Beauty password',
-      html: `
-        <h2>Password Reset Request</h2>
-        <p>You requested a password reset. Click the link below to reset your password:</p>
-        <a href="${resetUrl}">Reset Password</a>
-        <p>This link will expire in 24 hours.</p>
-        <p>If you didn't request a password reset, you can safely ignore this email.</p>
-      `,
-    };
-    
-    await sgMail.send(msg);
-    */
->>>>>>> Incoming (Background Agent changes)
   }
 }
 

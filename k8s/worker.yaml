@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tejo-worker
+  namespace: tejo-beauty
+  labels:
+    app: tejo-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tejo-worker
+  template:
+    metadata:
+      labels:
+        app: tejo-worker
+    spec:
+      containers:
+      - name: worker
+        image: tejo-worker:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: tejo-config
+        - secretRef:
+            name: tejo-secrets
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"

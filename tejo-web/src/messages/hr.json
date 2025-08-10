@@ -15,6 +15,13 @@
     }
   }
   ,
+  "nav": {
+    "home": "Početna",
+    "shop": "Shop",
+    "about": "O nama",
+    "pro": "Pro",
+    "blog": "Blog"
+  },
   "about": {
     "title": "O Tejo-Beauty",
     "fullText": "Tejo-Beauty je brend koji definira novu razinu beauty standarda. U fokusu su stručnost, kvaliteta i iskustvo — za krajnje korisnike i beauty profesionalce. Naša filozofija temelji se na dostupnosti visoko učinkovitih proizvoda koji zadovoljavaju najviše estetske i funkcionalne kriterije. Bilo da uređuješ vlastiti beauty kutak ili opremaš salon, Tejo-Beauty je mjesto gdje stručnost i stil postaju jedno."
@@ -22,7 +29,7 @@
   "pro": {
     "title": "Za profesionalce i salone",
     "subtitle": "Pridruži se profesionalnom programu za bolje cijene, podršku i ekskluzivan pristup.",
-    "benefits": ["Stručna selekcija","Tierski cjenici i loyalty","Prioritetna podrška","Edukativni resursi"],
+    "benefits": [ "Stručna selekcija", "Tierski cjenici i loyalty", "Prioritetna podrška", "Edukativni resursi" ],
     "contact": { "title": "Kontakt", "desc": "Javi nam se za detalje partnerstva." },
     "cta": "Zatraži partnerstvo"
   }

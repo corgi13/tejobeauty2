@@ -20,16 +20,16 @@ export class PaymentsController {
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
         payment_method_types: ['card'],
-        line_items: order.items.map((i) => ({ price_data: { currency: order.currency.toLowerCase(), product_data: { name: i.name }, unit_amount: Math.round(Number(i.price) * 100) }, quantity: i.qty })),
+        line_items: order.items.map((i: any) => ({ price_data: { currency: order.currency.toLowerCase(), product_data: { name: i.name }, unit_amount: Math.round(Number(i.price) * 100) }, quantity: i.quantity })),
         success_url: (process.env.FRONTEND_ORIGIN || 'http://localhost:3000') + '/order/success',
         cancel_url: (process.env.FRONTEND_ORIGIN || 'http://localhost:3000') + '/cart',
         metadata: { orderId: order.id },
       });
-      await this.prisma.order.update({ where: { id: order.id }, data: { status: 'pending', paymentProvider: 'stripe', paymentId: session.id } });
+      await this.prisma.order.update({ where: { id: order.id }, data: { status: 'PENDING', paymentProvider: 'stripe', paymentId: session.id } });
       return { url: session.url };
     } else if (provider === 'mollie') {
       // Minimal stub; integrate Mollie Orders API later
-      await this.prisma.order.update({ where: { id: order.id }, data: { status: 'pending', paymentProvider: 'mollie', paymentId: 'mollie_stub' } });
+      await this.prisma.order.update({ where: { id: order.id }, data: { status: 'PENDING', paymentProvider: 'mollie', paymentId: 'mollie_stub' } });
       return { url: (process.env.FRONTEND_ORIGIN || 'http://localhost:3000') + '/order/success' };
     }
     return { url: (process.env.FRONTEND_ORIGIN || 'http://localhost:3000') + '/order/success' };
@@ -57,7 +57,7 @@ export class PaymentsController {
       const order = await this.prisma.order.findFirst({ where: { paymentId: session.id } });
       if (order) await this.orders.release(order.id);
     }
-    await this.prisma.webhookEvent.create({ data: { eventId: event.id, provider: 'stripe' } });
+    await this.prisma.webhookEvent.create({ data: { eventId: event.id, provider: 'stripe', eventType: event.type } });
     return res.json({ received: true });
   }
 
@@ -67,7 +67,7 @@ export class PaymentsController {
       await this.orders.markPaid(body.orderId, 'simulated');
     } else {
       await this.orders.release(body.orderId);
-      await this.prisma.order.update({ where: { id: body.orderId }, data: { status: 'canceled' } });
+      await this.prisma.order.update({ where: { id: body.orderId }, data: { status: 'CANCELLED' } });
     }
     return { ok: true };
   }

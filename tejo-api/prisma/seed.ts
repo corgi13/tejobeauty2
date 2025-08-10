@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import * as argon2 from 'argon2';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -8,12 +8,16 @@ async function main() {
   await prisma.settings.upsert({
     where: { id: 'default' },
     update: {},
-    create: { id: 'default', freeShippingThreshold: 80 as any, loyaltyTiers: [{ name: 'Bronze', threshold: 0 }, { name: 'Silver', threshold: 200 }, { name: 'Gold', threshold: 500 }] as any },
+    create: {
+      id: 'default',
+      freeShippingThreshold: 80 as any,
+      loyaltyTiers: [{ name: 'Bronze', threshold: 0 }, { name: 'Silver', threshold: 200 }, { name: 'Gold', threshold: 500 }] as any,
+    },
   });
 
   // admin user
-  const pass = await argon2.hash('admin123');
-  await prisma.user.upsert({ where: { email: 'admin@tejo.local' }, update: {}, create: { email: 'admin@tejo.local', name: 'Admin', passwordHash: pass, isAdmin: true } });
+  const pass = await bcrypt.hash('admin123', 10);
+  await prisma.user.upsert({ where: { email: 'admin@tejo.local' }, update: {}, create: { email: 'admin@tejo.local', firstName: 'Admin', password: pass, isAdmin: true } });
 
   // categories + sample products
   const cats = [
@@ -33,9 +37,9 @@ async function main() {
         description: 'High quality beauty product',
         price: (19.99 + i) as any,
         images: [],
-        category: i % 2 === 0 ? 'skincare' : 'nails',
+        category: { connect: { slug: i % 2 === 0 ? 'skincare' : 'nails' } },
         brand: 'Tejo',
-        countInStock: 100,
+        stock: 100,
       },
     });
   }

@@ -1,9 +1,23 @@
 import { getTranslations } from 'next-intl/server';
+import { locales } from '../../i18n';
+// Temporary workaround for Next 15 typing expecting Promise params in generated types
+// We'll assert the type locally to satisfy the generic constraint.
 import Link from 'next/link';
 import { NewsletterSignup } from '@/components/ui/NewsletterSignup';
 
-export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+// Next's inferred PageProps appears to expect a Promise for params due to prior incorrect typing.
+// We cast in the component to avoid fighting the generated type.
+interface LocalePageParams { locale: string }
+interface LocalePageProps { params: any }
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export const dynamicParams = false;
+
+export default async function HomePage(props: LocalePageProps) {
+  const { locale } = (props.params as LocalePageParams);
   const t = await getTranslations({ locale, namespace: 'home' });
 
   return (
@@ -18,18 +32,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <span className="text-gold">prirodno dostavljena</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Otkrijte najbolje prirodne proizvode za njegu lica, tijela i kose. 
+              Otkrijte najbolje prirodne proizvode za njegu lica, tijela i kose.
               Premium kvaliteta za vašu ljepotu i dobrobit.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/categories" 
+              <Link
+                href="/categories"
                 className="inline-flex items-center px-8 py-4 bg-onyx text-white rounded-xl font-medium hover:bg-onyx/90 transition-colors"
               >
                 Istraži proizvode
               </Link>
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="inline-flex items-center px-8 py-4 border-2 border-onyx text-onyx rounded-xl font-medium hover:bg-onyx hover:text-white transition-colors"
               >
                 Saznaj više

@@ -14,6 +14,14 @@
       "categories": "Comprar por categoria"
     }
   }
+  ,
+  "nav": {
+    "home": "Início",
+    "shop": "Loja",
+    "about": "Sobre nós",
+    "pro": "Pro",
+    "blog": "Blog"
+  }
 }
 
 

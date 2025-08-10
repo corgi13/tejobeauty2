@@ -1,17 +1,16 @@
 import '../globals.css';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { Providers } from '@/components/Providers';
-<<<<<<< Current (Your changes)
-import { Header } from '@/components/layout/Header';
-=======
 import { Header } from '@/components/ui/Header';
->>>>>>> Incoming (Background Agent changes)
+import { locales, Locale } from '../../i18n';
 
-export const dynamic = 'force-static';
+// Let Next decide (remove forced static so dynamic locale detection works)
+export const dynamic = 'auto';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export async function generateMetadata({ params }: { params: { locale: string } }) {
+  const { locale } = params;
+  if (!locales.includes(locale as Locale)) return {} as any;
   const t = await getTranslations({ locale, namespace: 'seo' });
   const siteName = 'Tejo-Beauty';
   return {
@@ -30,13 +29,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   } as any;
 }
 
-export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
+export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: { locale: string } }) {
+  const { locale } = params;
+  // Allow static rendering for this locale
+  unstable_setRequestLocale(locale);
   const messages = await getMessages();
   return (
     <html lang={locale}>
       <body className="min-h-screen font-sans antialiased">
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={locale}>
           <Providers>
             <Header />
             {children}

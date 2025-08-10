@@ -56,8 +56,6 @@ export class VariantsController {
   async remove(@Param('id') id: string) {
     return this.variantsService.remove(id);
   }
-<<<<<<< Current (Your changes)
-=======
 
   @Get('product/:productId/attributes')
   @ApiOperation({ summary: 'Get available attributes for a product' })
@@ -74,7 +72,6 @@ export class VariantsController {
     const available = await this.variantsService.checkStock(id, quantity);
     return { available, variantId: id, requestedQuantity: quantity };
   }
->>>>>>> Incoming (Background Agent changes)
 }
 
 

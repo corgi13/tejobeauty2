@@ -69,8 +69,6 @@ export class AuthController {
   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.forgotPassword(forgotPasswordDto);
   }
-<<<<<<< Current (Your changes)
-=======
 
   @Post('reset-password')
   @ApiOperation({ summary: 'Reset password with token' })
@@ -79,7 +77,6 @@ export class AuthController {
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return this.authService.resetPassword(resetPasswordDto);
   }
->>>>>>> Incoming (Background Agent changes)
 }
 
 

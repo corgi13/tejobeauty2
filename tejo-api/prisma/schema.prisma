@@ -28,6 +28,8 @@ model User {
   resetTokenExpiry DateTime?
   customerGroup String?
   loyaltyPoints Int       @default(0)
+  lifetimeSpend Decimal   @db.Decimal(12, 2) @default(0)
+  refreshToken  String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   orders        Order[]
@@ -93,6 +95,19 @@ model Product {
   orderItems  OrderItem[]
   reviews     Review[]
   recentlyViewed RecentlyViewed[]
+  b2bPrices   B2BPrice[]
+  inventoryMovements InventoryMovement[]
+}
+
+model B2BPrice {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  customerGroup String
+  price         Decimal  @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
+
+  @@unique([productId, customerGroup])
 }
 
 model ProductVariant {
@@ -116,21 +131,30 @@ model Order {
   id            String      @id @default(cuid())
   userId        String?
   user          User?       @relation(fields: [userId], references: [id])
-  email         String
-  firstName     String
-  lastName      String
+  email         String?
+  firstName     String?
+  lastName      String?
   phone         String?
-  address       String
-  city          String
-  postalCode    String
-  country       String
+  address       String?
+  city          String?
+  postalCode    String?
+  country       String?
   status        OrderStatus @default(PENDING)
   paymentStatus PaymentStatus @default(PENDING)
-  paymentMethod String
+  paymentMethod String?
+  paymentProvider String?
+  paymentId     String?
+  currency      String     @default("EUR")
   subtotal      Decimal     @db.Decimal(10, 2)
   discount      Decimal     @db.Decimal(10, 2) @default(0)
   shipping      Decimal     @db.Decimal(10, 2) @default(0)
   total         Decimal     @db.Decimal(10, 2)
+  itemsTotal    Decimal     @db.Decimal(10, 2) @default(0)
+  shippingTotal Decimal     @db.Decimal(10, 2) @default(0)
+  discountTotal Decimal     @db.Decimal(10, 2) @default(0)
+  taxTotal      Decimal     @db.Decimal(10, 2) @default(0)
+  shippingAddress Json?
+  billingAddress  Json?
   stripeSessionId String?
   molliePaymentId String?
   items         OrderItem[]
@@ -147,6 +171,10 @@ model OrderItem {
   variantId   String?
   variant     ProductVariant? @relation(fields: [variantId], references: [id])
   quantity    Int
+  name        String
+  sku         String?
+  image       String?
+  attributes  Json?
   price       Decimal  @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
 }
@@ -206,6 +234,36 @@ model WebhookEvent {
   createdAt DateTime @default(now())
 }
 
+model Settings {
+  id                   String   @id @default("default")
+  freeShippingThreshold Decimal  @db.Decimal(10, 2) @default(0)
+  loyaltyTiers         Json?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model InventoryMovement {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  variantId String?
+  type      String
+  qty       Int
+  refType   String?
+  refId     String?
+  createdAt DateTime @default(now())
+}
+
+model PartnerRequest {
+  id        String   @id @default(cuid())
+  name      String
+  company   String
+  email     String
+  phone     String?
+  message   String
+  createdAt DateTime @default(now())
+}
+
 model AuditLog {
   id        String   @id @default(cuid())
   userId    String?
@@ -247,16 +305,3 @@ enum PaymentStatus {
   REFUNDED
   PARTIALLY_REFUNDED
 }
-
-<<<<<<< Current (Your changes)
-model AuditLog {
-  id        String   @id @default(uuid())
-  actorId   String?
-  action    String
-  entity    String
-  entityId  String?
-  createdAt DateTime @default(now())
-}
-
-=======
->>>>>>> Incoming (Background Agent changes)

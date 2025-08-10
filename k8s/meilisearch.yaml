@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meilisearch-pvc
+  namespace: tejo-beauty
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tejo-meilisearch
+  namespace: tejo-beauty
+  labels:
+    app: tejo-meilisearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tejo-meilisearch
+  template:
+    metadata:
+      labels:
+        app: tejo-meilisearch
+    spec:
+      containers:
+      - name: meilisearch
+        image: getmeili/meilisearch:v1.10
+        ports:
+        - containerPort: 7700
+        env:
+        - name: MEILI_MASTER_KEY
+          value: "tejoMasterKey123"
+        - name: MEILI_ENV
+          value: "development"
+        volumeMounts:
+        - name: meilisearch-storage
+          mountPath: /meili_data
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 7700
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 7700
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: meilisearch-storage
+        persistentVolumeClaim:
+          claimName: meilisearch-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tejo-meilisearch
+  namespace: tejo-beauty
+  labels:
+    app: tejo-meilisearch
+spec:
+  type: ClusterIP
+  ports:
+  - port: 7700
+    targetPort: 7700
+  selector:
+    app: tejo-meilisearch

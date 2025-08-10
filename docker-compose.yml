@@ -1,0 +1,148 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: tejo-postgres
+    environment:
+      POSTGRES_USER: tejo
+      POSTGRES_PASSWORD: tejopass123
+      POSTGRES_DB: tejobeauty
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./tejo-api/prisma/schema.prisma:/docker-entrypoint-initdb.d/schema.prisma
+    networks:
+      - tejo-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tejo -d tejobeauty"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for caching and queue
+  redis:
+    image: redis:7-alpine
+    container_name: tejo-redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - tejo-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Meilisearch for search functionality
+  meilisearch:
+    image: getmeili/meilisearch:v1.10
+    container_name: tejo-meilisearch
+    environment:
+      MEILI_MASTER_KEY: "tejoMasterKey123"
+      MEILI_ENV: "development"
+    ports:
+      - "7700:7700"
+    volumes:
+      - meilisearch_data:/meili_data
+    networks:
+      - tejo-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API
+  tejo-api:
+    build:
+      context: ./tejo-api
+      dockerfile: Dockerfile
+    container_name: tejo-api
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://tejo:tejopass123@postgres:5432/tejobeauty
+      - REDIS_URL=redis://redis:6379
+      - MEILISEARCH_URL=http://meilisearch:7700
+      - MEILISEARCH_KEY=tejoMasterKey123
+      - JWT_SECRET=tejoJwtSecret123
+      - PORT=4000
+      - CLOUDINARY_CLOUD_NAME=your_cloud_name
+      - CLOUDINARY_API_KEY=your_api_key
+      - CLOUDINARY_API_SECRET=your_api_secret
+      - STRIPE_SECRET_KEY=sk_test_your_stripe_key
+      - MOLLIE_API_KEY=test_your_mollie_key
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
+    networks:
+      - tejo-network
+    volumes:
+      - ./tejo-api:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm run prisma:deploy &&
+        npm run prisma:generate &&
+        npm run start:dev
+      "
+
+  # Background Worker
+  tejo-worker:
+    build:
+      context: ./tejo-worker
+      dockerfile: Dockerfile
+    container_name: tejo-worker
+    environment:
+      - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
+      - MEILISEARCH_URL=http://meilisearch:7700
+      - MEILISEARCH_KEY=tejoMasterKey123
+    depends_on:
+      - redis
+      - meilisearch
+      - tejo-api
+    networks:
+      - tejo-network
+    volumes:
+      - ./tejo-worker:/app
+      - /app/node_modules
+
+  # Frontend Web App
+  tejo-web:
+    build:
+      context: ./tejo-web
+      dockerfile: Dockerfile
+    container_name: tejo-web
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://tejo-beauty.com/api
+      - NEXT_PUBLIC_SITE_URL=https://tejo-beauty.com
+      - REVALIDATE_SECRET=tejoRevalidateSecret123
+    ports:
+      - "3000:3000"
+    depends_on:
+      - tejo-api
+    networks:
+      - tejo-network
+    # No volumes for production-like run to preserve built assets inside the image
+
+networks:
+  tejo-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  meilisearch_data:

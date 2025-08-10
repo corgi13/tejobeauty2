@@ -25,7 +25,7 @@ export class ReviewsController {
     const stats = await this.prisma.review.aggregate({ where: { productId: body.productId }, _avg: { rating: true }, _count: { _all: true } });
     const avg = Number(stats._avg.rating ?? 0);
     const count = stats._count._all;
-    await this.prisma.product.update({ where: { id: body.productId }, data: { rating: avg, numReviews: count } });
+    await this.prisma.product.update({ where: { id: body.productId }, data: { rating: avg, reviewCount: count } });
     return r;
   }
 

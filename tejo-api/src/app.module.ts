@@ -11,6 +11,8 @@ import { PaymentsModule } from './modules/payments/payments.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { SearchModule } from './modules/search/search.module';
 import { NewsletterModule } from './modules/newsletter/newsletter.module';
+import { HealthController } from './health.controller';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { NewsletterModule } from './modules/newsletter/newsletter.module';
     SearchModule,
     NewsletterModule,
   ],
+  controllers: [HealthController],
+  providers: [PrismaService],
 })
 export class AppModule {}
 

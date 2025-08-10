@@ -14,7 +14,7 @@ export class UsersController {
     if (token) {
       try {
         const payload = this.jwt.verify(token, { secret: process.env.JWT_ACCESS_SECRET! });
-        user = await this.prisma.user.findUnique({ where: { id: payload.sub }, select: { id: true, name: true, email: true, isAdmin: true, createdAt: true } });
+        user = await this.prisma.user.findUnique({ where: { id: payload.sub }, select: { id: true, firstName: true, lastName: true, email: true, isAdmin: true, createdAt: true } });
       } catch {}
     }
     return { user };

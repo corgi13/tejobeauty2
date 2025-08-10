@@ -1,10 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
 
-@Controller('health')
+@Controller('')
 export class HealthController {
-  @Get()
+  @Get('health')
   get() {
-    return { ok: true };
+    return { status: 'ok', timestamp: new Date().toISOString() };
+  }
+
+  @Get('')
+  root() {
+    return { message: 'Tejo Beauty API', version: '0.1.0' };
   }
 }
 

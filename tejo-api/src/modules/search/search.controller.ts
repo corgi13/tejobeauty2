@@ -84,8 +84,6 @@ export class SearchController {
   async getFilters() {
     return this.searchService.getSearchFilters();
   }
-<<<<<<< Current (Your changes)
-=======
 
   @Get('popular')
   @ApiOperation({ summary: 'Get popular products' })
@@ -113,7 +111,6 @@ export class SearchController {
   async getTypeahead(@Query('q') query: string) {
     return this.searchService.getSearchSuggestions(query, 5);
   }
->>>>>>> Incoming (Background Agent changes)
 }
 
 

@@ -9,9 +9,9 @@ export class CouponsController {
   async validate(@Body() body: { code: string; now?: string }) {
     const now = body.now ? new Date(body.now) : new Date();
     const c = await this.prisma.coupon.findUnique({ where: { code: body.code } });
-    if (!c || !c.active) return { valid: false };
-    if ((c.startsAt && c.startsAt > now) || (c.endsAt && c.endsAt < now)) return { valid: false };
-    if (c.usageLimit && c.usedCount >= c.usageLimit) return { valid: false };
+    if (!c || !c.isActive) return { valid: false };
+    if ((c.validFrom && c.validFrom > now) || (c.validUntil && c.validUntil < now)) return { valid: false };
+    if (c.maxUses && c.usedCount >= c.maxUses) return { valid: false };
     return { valid: true, type: c.type, value: c.value };
   }
 }

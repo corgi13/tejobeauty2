@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secrets.yaml
+  - postgres.yaml
+  - redis.yaml
+  - meilisearch.yaml
+  - api.yaml
+  - web.yaml
+  - worker.yaml
+
+namespace: tejo-beauty

@@ -12,7 +12,7 @@ export class ProductsController {
   @Get()
   list(@Query('skip') skip = '0', @Query('take') take = '20', @Query('category') category?: string, @Query('brand') brand?: string, @Query('priceMin') priceMin?: string, @Query('priceMax') priceMax?: string) {
     const where: any = {};
-    if (category) where.category = category;
+    if (category) where.category = { slug: category } as any;
     if (brand) where.brand = brand;
     if (priceMin || priceMax) where.price = {
       ...(priceMin ? { gte: Number(priceMin) } : {}),

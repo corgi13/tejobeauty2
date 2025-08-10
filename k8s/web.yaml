@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tejo-web
+  namespace: tejo-beauty
+  labels:
+    app: tejo-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tejo-web
+  template:
+    metadata:
+      labels:
+        app: tejo-web
+    spec:
+      containers:
+      - name: web
+        image: tejo-web:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: tejo-config
+        - secretRef:
+            name: tejo-secrets
+        livenessProbe:
+          httpGet:
+            path: /en
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /en
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tejo-web
+  namespace: tejo-beauty
+  labels:
+    app: tejo-web
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3000
+    targetPort: 3000
+  selector:
+    app: tejo-web
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tejo-web-ingress
+  namespace: tejo-beauty
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: tejo.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tejo-web
+            port:
+              number: 3000
