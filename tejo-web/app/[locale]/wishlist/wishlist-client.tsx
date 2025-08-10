@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useWishlist } from '@/store/wishlist';
 import { useCart } from '@/store/cart';
-import { MovingBorder } from '@/components/ui/MovingBorder';
+import { MovingBorder } from '@/components/ui/moving-border';
 import { addConfetti } from '@/lib/confetti';
 
 export function WishlistClient() {

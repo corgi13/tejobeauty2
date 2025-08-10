@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { MovingBorder } from '@/components/ui/MovingBorder';
+import { MovingBorder } from '@/components/ui/moving-border';
 import { api } from '@/lib/api';
 
 interface LoginForm { email: string; password: string }

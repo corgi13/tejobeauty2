@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { MovingBorder } from './moving-border';
+import { BackgroundGradient } from './background-gradient';
 
 interface Testimonial {
   id: string;
@@ -267,7 +268,7 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
                   >
-                    "{currentTestimonial.content}"
+                    &ldquo;{currentTestimonial.content}&rdquo;
                   </motion.blockquote>
 
                   {/* Author Info */}

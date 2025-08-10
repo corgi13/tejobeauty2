@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useCart } from '@/store/cart';
-import { MovingBorder } from '@/components/ui/MovingBorder';
+import { MovingBorder } from '@/components/ui/moving-border';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { CheckoutOverlay } from '@/components/ui/CheckoutOverlay';
 import { TermsCheckbox } from '@/components/ui/TermsCheckbox';

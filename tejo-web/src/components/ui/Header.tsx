@@ -6,7 +6,8 @@ import { useCart } from '@/store/cart';
 import { useWishlist } from '@/store/wishlist';
 import { SearchTypeahead } from './SearchTypeahead';
 import { MobileDrawer } from './MobileDrawer';
-import { MovingBorder } from './MovingBorder';
+import { MovingBorder } from './moving-border';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Header() {
   const t = useTranslations('nav');
@@ -33,68 +34,112 @@ export function Header() {
   ];
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-white'
+    <header className={`sticky top-0 z-50 transition-all duration-500 ${
+      isScrolled 
+        ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-gray-100' 
+        : 'bg-white/80 backdrop-blur-md'
     }`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-gold to-cream"></div>
-            <span className="font-heading text-xl font-bold text-onyx">Tejo-Beauty</span>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Link href="/" className="flex items-center space-x-3 group">
+              <motion.div 
+                className="h-10 w-10 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 shadow-lg group-hover:shadow-gold-500/25 transition-all duration-300"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+              />
+              <div className="flex flex-col">
+                <span className="font-heading text-2xl font-bold bg-gradient-to-r from-onyx-800 to-onyx-600 bg-clip-text text-transparent">
+                  Tejo-Beauty
+                </span>
+                <span className="text-xs text-gold-600 font-medium -mt-1">Premium Beauty</span>
+              </div>
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <div key={item.href} className="relative group">
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navItems.map((item, index) => (
+              <motion.div 
+                key={item.href} 
+                className="relative group"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+              >
                 <Link 
                   href={item.href}
-                  className="relative px-3 py-2 text-sm font-medium text-onyx transition-colors hover:text-gold"
+                  className="relative px-4 py-3 text-sm font-medium text-onyx transition-all duration-300 hover:text-gold-600 rounded-xl group-hover:bg-gold-50"
                 >
                   {item.label}
-                  <div className="absolute inset-0 rounded-lg bg-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  <motion.div 
+                    className="absolute inset-0 rounded-xl bg-gold-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    initial={false}
+                  />
                 </Link>
                 
                 {/* Mega Menu for Shop */}
                 {item.hasMegaMenu && (
-                  <div className="absolute top-full left-0 w-96 bg-white shadow-xl rounded-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                    <div className="p-6">
-                      <h3 className="font-heading text-lg font-semibold text-onyx mb-4">Kategorije</h3>
+                  <motion.div 
+                    className="absolute top-full left-0 w-[500px] bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                    initial={false}
+                  >
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="font-heading text-xl font-semibold text-onyx">Kategorije proizvoda</h3>
+                        <div className="w-12 h-1 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full"></div>
+                      </div>
+                      
                       <div className="grid grid-cols-2 gap-4">
-                        <Link href="/categories/face" className="group/item flex items-center space-x-3 p-3 rounded-lg hover:bg-cream/50 transition-colors">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blush to-gold"></div>
-                          <div>
-                            <div className="font-medium text-onyx group-hover/item:text-gold transition-colors">Lice</div>
-                            <div className="text-xs text-gray-500">Nega lica</div>
-                          </div>
-                        </Link>
-                        <Link href="/categories/body" className="group/item flex items-center space-x-3 p-3 rounded-lg hover:bg-cream/50 transition-colors">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cream to-blush"></div>
-                          <div>
-                            <div className="font-medium text-onyx group-hover/item:text-gold transition-colors">Tijelo</div>
-                            <div className="text-xs text-gray-500">Nega tijela</div>
-                          </div>
-                        </Link>
-                        <Link href="/categories/hair" className="group/item flex items-center space-x-3 p-3 rounded-lg hover:bg-cream/50 transition-colors">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-gold to-cream"></div>
-                          <div>
-                            <div className="font-medium text-onyx group-hover/item:text-gold transition-colors">Kosa</div>
-                            <div className="text-xs text-gray-500">Nega kose</div>
-                          </div>
-                        </Link>
-                        <Link href="/categories/wellness" className="group/item flex items-center space-x-3 p-3 rounded-lg hover:bg-cream/50 transition-colors">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blush to-cream"></div>
-                          <div>
-                            <div className="font-medium text-onyx group-hover/item:text-gold transition-colors">Wellness</div>
-                            <div className="text-xs text-gray-500">Dobrobit</div>
-                          </div>
+                        {[
+                          { href: '/categories/face', title: 'Lice', description: 'Nega lica', icon: '✨', color: 'from-pink-100 to-rose-100' },
+                          { href: '/categories/body', title: 'Tijelo', description: 'Nega tijela', icon: '🧴', color: 'from-blue-100 to-indigo-100' },
+                          { href: '/categories/hair', title: 'Kosa', description: 'Nega kose', icon: '💇‍♀️', color: 'from-purple-100 to-violet-100' },
+                          { href: '/categories/wellness', title: 'Wellness', description: 'Dobrobit', icon: '🧘‍♀️', color: 'from-green-100 to-emerald-100' },
+                        ].map((category, catIndex) => (
+                          <motion.div
+                            key={category.href}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.4, delay: catIndex * 0.1 }}
+                          >
+                            <Link 
+                              href={category.href} 
+                              className="group/item flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-50 transition-all duration-300"
+                            >
+                              <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center text-2xl group-hover/item:scale-110 transition-transform duration-300`}>
+                                {category.icon}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-onyx group-hover/item:text-gold-600 transition-colors">
+                                  {category.title}
+                                </div>
+                                <div className="text-sm text-gray-500">{category.description}</div>
+                              </div>
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-6 pt-6 border-t border-gray-100">
+                        <Link 
+                          href="/categories" 
+                          className="inline-flex items-center text-gold-600 hover:text-gold-700 font-medium transition-colors"
+                        >
+                          Pogledaj sve kategorije
+                          <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
                         </Link>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
-              </div>
+              </motion.div>
             ))}
           </nav>
 
@@ -104,40 +149,65 @@ export function Header() {
           </div>
 
           {/* Right side actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
             {/* Wishlist */}
-            <Link href="/wishlist" className="relative p-2 text-onyx hover:text-gold transition-colors">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-              {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gold text-white text-xs flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+            >
+              <Link href="/wishlist" className="relative p-3 text-onyx hover:text-gold-600 transition-all duration-300 hover:bg-gold-50 rounded-xl group">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                {wishlistCount > 0 && (
+                  <motion.span 
+                    className="absolute -top-1 -right-1 h-6 w-6 rounded-full bg-gradient-to-r from-pink-400 to-rose-500 text-white text-xs flex items-center justify-center font-bold shadow-lg"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3, type: "spring" }}
+                  >
+                    {wishlistCount}
+                  </motion.span>
+                )}
+              </Link>
+            </motion.div>
 
             {/* Cart */}
-            <Link href="/cart" className="relative p-2 text-onyx hover:text-gold transition-colors">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
-              </svg>
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gold text-white text-xs flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+            >
+              <Link href="/cart" className="relative p-3 text-onyx hover:text-gold-600 transition-all duration-300 hover:bg-gold-50 rounded-xl group">
+                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
+                </svg>
+                {cartCount > 0 && (
+                  <motion.span 
+                    className="absolute -top-1 -right-1 h-6 w-6 rounded-full bg-gradient-to-r from-gold-400 to-gold-600 text-white text-xs flex items-center justify-center font-bold shadow-lg"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3, type: "spring" }}
+                  >
+                    {cartCount}
+                  </motion.span>
+                )}
+              </Link>
+            </motion.div>
 
             {/* Mobile menu button */}
-            <button
+            <motion.button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-2 text-onyx hover:text-gold transition-colors"
+              className="lg:hidden p-3 text-onyx hover:text-gold-600 hover:bg-gold-50 transition-all duration-300 rounded-xl"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-            </button>
+            </motion.button>
           </div>
         </div>
 
