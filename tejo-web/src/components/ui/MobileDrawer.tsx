@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XMarkIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { X, ChevronRight } from 'lucide-react';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -79,7 +79,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <XMarkIcon className="h-6 w-6" />
+                <X className="h-6 w-6" />
               </motion.button>
             </div>
 
@@ -100,7 +100,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                                 <span className="text-2xl">{item.icon}</span>
                                 <span className="font-semibold text-onyx">{item.label}</span>
                               </div>
-                              <ChevronRightIcon className="h-5 w-5 text-gold-500" />
+                              <ChevronRight className="h-5 w-5 text-gold-500" />
                             </div>
                             
                             {/* Submenu */}
@@ -199,7 +199,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                     className="inline-flex items-center space-x-2 text-gold-600 hover:text-gold-700 font-medium transition-colors"
                   >
                     <span>Kontaktirajte nas</span>
-                    <ChevronRightIcon className="h-4 w-4" />
+                    <ChevronRight className="h-4 w-4" />
                   </Link>
                 </div>
               </motion.div>

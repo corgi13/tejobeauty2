@@ -5,13 +5,13 @@ import { ProductCard } from '@/components/ui/ProductCard';
 import { MovingBorder } from '@/components/ui/moving-border';
 import { api } from '@/lib/api';
 import { 
-  MagnifyingGlassIcon, 
-  FunnelIcon, 
-  XMarkIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  StarIcon
-} from '@heroicons/react/24/outline';
+  Search, 
+  Filter, 
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Star
+} from 'lucide-react';
 
 interface SearchFilters {
   query?: string;
@@ -181,7 +181,7 @@ export default function SearchPage() {
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <StarIcon
+      <Star
         key={i}
         className={`h-4 w-4 ${
           i < Math.floor(rating) 
@@ -235,7 +235,7 @@ export default function SearchPage() {
                   Pretraga
                 </label>
                 <div className="relative">
-                  <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     type="text"
                     value={localFilters.query || ''}
@@ -418,7 +418,7 @@ export default function SearchPage() {
                 onClick={() => setShowFilters(!showFilters)}
                 className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm"
               >
-                <FunnelIcon className="h-4 w-4" />
+                <Filter className="h-4 w-4" />
                 Filteri
               </button>
             </div>
@@ -441,7 +441,7 @@ export default function SearchPage() {
                         disabled={!searchResult.pagination.hasPrev}
                         className="p-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                       >
-                        <ChevronLeftIcon className="h-4 w-4" />
+                        <ChevronLeft className="h-4 w-4" />
                       </button>
                       
                       {Array.from({ length: searchResult.pagination.totalPages }, (_, i) => i + 1).map((page) => (
@@ -463,7 +463,7 @@ export default function SearchPage() {
                         disabled={!searchResult.pagination.hasNext}
                         className="p-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                       >
-                        <ChevronRightIcon className="h-4 w-4" />
+                        <ChevronRight className="h-4 w-4" />
                       </button>
                     </nav>
                   </div>
@@ -471,7 +471,7 @@ export default function SearchPage() {
               </>
             ) : (
               <div className="text-center py-12">
-                <MagnifyingGlassIcon className="mx-auto h-12 w-12 text-gray-400" />
+                <Search className="mx-auto h-12 w-12 text-gray-400" />
                 <h3 className="mt-2 text-sm font-medium text-gray-900">Nema rezultata</h3>
                 <p className="mt-1 text-sm text-gray-500">
                   Pokušajte promijeniti filtere ili pretražiti drugačiji pojam.

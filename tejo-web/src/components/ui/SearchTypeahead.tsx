@@ -2,7 +2,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Search, X, Package, Tag, FileText } from 'lucide-react';
+
 
 interface SearchResult {
   id: string;
@@ -23,52 +24,72 @@ export function SearchTypeahead() {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Mock search results - replace with actual API call
-  const mockSearch = async (searchQuery: string): Promise<SearchResult[]> => {
+  // Real search function using our API
+  const searchProducts = async (searchQuery: string): Promise<SearchResult[]> => {
     if (!searchQuery.trim()) return [];
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    const mockData: SearchResult[] = [
-      {
-        id: '1',
-        title: 'Anti-aging serum',
-        category: 'Nega lica',
-        price: 89.99,
-        image: '/api/placeholder/60/60',
-        type: 'product'
-      },
-      {
-        id: '2',
-        title: 'Hydrating moisturizer',
-        category: 'Nega lica',
-        price: 65.50,
-        image: '/api/placeholder/60/60',
-        type: 'product'
-      },
-      {
-        id: '3',
-        title: 'Nega lica',
-        category: 'Kategorija',
-        price: 0,
-        image: '/api/placeholder/60/60',
-        type: 'category'
-      },
-      {
-        id: '4',
-        title: '10 koraka za savršenu rutinu',
-        category: 'Blog',
-        price: 0,
-        image: '/api/placeholder/60/60',
-        type: 'article'
+    try {
+      // Search products
+      const productsResponse = await fetch(`/api/products/search?q=${encodeURIComponent(searchQuery)}&limit=5`);
+      const productsData = await productsResponse.json();
+      
+      // Search blog posts
+      const blogResponse = await fetch(`/api/blog/search?q=${encodeURIComponent(searchQuery)}&limit=3`);
+      const blogData = await blogResponse.json();
+      
+      // Search categories
+      const categoriesResponse = await fetch(`/api/categories/search?q=${encodeURIComponent(searchQuery)}&limit=2`);
+      const categoriesData = await categoriesResponse.json();
+      
+      const results: SearchResult[] = [];
+      
+      // Add products
+      if (productsData.data) {
+        productsData.data.forEach((product: any) => {
+          results.push({
+            id: product.id,
+            title: product.name,
+            category: product.category?.name || 'Proizvodi',
+            price: product.price,
+            image: product.imageUrl || '/api/placeholder/60/60',
+            type: 'product'
+          });
+        });
       }
-    ];
-    
-    return mockData.filter(item => 
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+      
+      // Add categories
+      if (categoriesData.data) {
+        categoriesData.data.forEach((category: any) => {
+          results.push({
+            id: category.id,
+            title: category.name,
+            category: 'Kategorija',
+            price: 0,
+            image: category.imageUrl || '/api/placeholder/60/60',
+            type: 'category'
+          });
+        });
+      }
+      
+      // Add blog posts
+      if (blogData.data) {
+        blogData.data.forEach((post: any) => {
+          results.push({
+            id: post.id,
+            title: post.title,
+            category: 'Blog',
+            price: 0,
+            image: post.imageUrl || '/api/placeholder/60/60',
+            type: 'article'
+          });
+        });
+      }
+      
+      return results;
+    } catch (error) {
+      console.error('Search error:', error);
+      return [];
+    }
   };
 
   useEffect(() => {
@@ -95,7 +116,7 @@ export function SearchTypeahead() {
       setIsOpen(true);
       
       try {
-        const searchResults = await mockSearch(query);
+        const searchResults = await searchProducts(query);
         setResults(searchResults);
         setSelectedIndex(-1);
       } catch (error) {
@@ -175,7 +196,7 @@ export function SearchTypeahead() {
           transition={{ duration: 0.4 }}
         >
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+            <Search className="h-5 w-5 text-gray-400" />
           </div>
           
           <input
@@ -203,7 +224,7 @@ export function SearchTypeahead() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <XMarkIcon className="h-5 w-5" />
+              <X className="h-5 w-5" />
             </motion.button>
           )}
         </motion.div>

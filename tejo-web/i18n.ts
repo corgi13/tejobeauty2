@@ -1,13 +1,18 @@
-import { getRequestConfig, unstable_setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { getRequestConfig } from 'next-intl/server';
 
-export const locales = ['hr', 'en', 'de', 'pt', 'es', 'it'] as const; // keep in sync with middleware
-export type Locale = typeof locales[number];
+// Can be imported from a shared config
+export const locales = ['hr', 'en', 'de', 'pt', 'es', 'it'] as const;
+export const defaultLocale = 'en' as const;
+
+export type Locale = (typeof locales)[number];
 
 export default getRequestConfig(async ({ locale }) => {
-    // Set the request locale explicitly to allow static rendering
-    unstable_setRequestLocale(locale);
-    if (!locales.includes(locale as Locale)) notFound();
-    const messages = (await import(`./src/messages/${locale}.json`)).default;
-    return { locale, messages };
+  // Validate that the incoming `locale` parameter is valid
+  if (!locales.includes(locale as any)) notFound();
+
+  return {
+    locale,
+    messages: (await import(`./src/messages/${locale}.json`)).default
+  };
 });

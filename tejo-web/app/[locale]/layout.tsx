@@ -1,6 +1,6 @@
 import '../globals.css';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { Providers } from '@/components/Providers';
 import { Header } from '@/components/ui/Header';
 import { locales, Locale } from '../../i18n';
@@ -32,7 +32,6 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: { locale: string } }) {
   const { locale } = params;
   // Allow static rendering for this locale
-  unstable_setRequestLocale(locale);
   const messages = await getMessages();
   return (
     <html lang={locale}>

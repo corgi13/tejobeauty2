@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { useCart } from '@/store/cart';
 import { useWishlist } from '@/store/wishlist';
 import { MovingBorder } from './moving-border';
-import { StarIcon, HeartIcon, EyeIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
+import { Star, Heart, Eye, ShoppingCart } from 'lucide-react';
 
 interface ProductVariant {
   id: string;
@@ -100,7 +99,7 @@ export function ProductCard({
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <StarIcon
+              <Star
         key={i}
         className={`h-4 w-4 ${
           i < Math.floor(rating) 
@@ -156,9 +155,9 @@ export function ProductCard({
                 className="bg-white p-2 rounded-full shadow-md hover:bg-gray-50 transition-colors"
               >
                 {isInWishlist ? (
-                  <HeartSolidIcon className="h-4 w-4 text-red-500" />
+                  <Heart className="h-4 w-4 text-red-500 fill-current" />
                 ) : (
-                  <HeartIcon className="h-4 w-4 text-gray-600" />
+                  <Heart className="h-4 w-4 text-gray-600" />
                 )}
               </button>
             )}
@@ -168,7 +167,7 @@ export function ProductCard({
                 href={`/products/${product.slug}`}
                 className="bg-white p-2 rounded-full shadow-md hover:bg-gray-50 transition-colors"
               >
-                <EyeIcon className="h-4 w-4 text-gray-600" />
+                <Eye className="h-4 w-4 text-gray-600" />
               </Link>
             )}
           </div>
@@ -260,7 +259,7 @@ export function ProductCard({
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
             ) : (
               <>
-                <ShoppingCartIcon className="h-4 w-4" />
+                <ShoppingCart className="h-4 w-4" />
                 {isOutOfStock ? 'Nedostupno' : 'Dodaj u košaricu'}
               </>
             )}
