@@ -1,26 +1,57 @@
 {
   "seo": {
     "defaultTitle": "Beleza com significado",
-    "defaultDescription": "A Tejo-Beauty é o seu parceiro de confiança para cuidados profissionais e excelência estética."
+    "defaultDescription": "Tejo-Beauty é seu parceiro de confiança para cuidados profissionais e excelência estética."
   },
   "home": {
     "hero": {
-      "title": "A beleza não é luxo. A beleza é padrão.",
-      "subtitle": "A Tejo-Beauty é o seu parceiro de confiança no mundo do cuidado profissional e da excelência estética.",
-      "ctaPrimary": "Ver todos os produtos",
-      "ctaSecondary": "Torne-se parceiro profissional"
+      "title": "A beleza não é um luxo. A beleza é um padrão.",
+      "subtitle": "Tejo-Beauty é seu parceiro de confiança no mundo dos cuidados profissionais e excelência estética.",
+      "description": "Descubra os melhores produtos naturais para cuidados faciais, corporais e capilares. Qualidade premium para sua beleza e bem-estar.",
+      "ctaPrimary": "Comprar todos os produtos",
+      "ctaSecondary": "Torne-se um parceiro profissional",
+      "exploreButton": "Explorar produtos",
+      "learnMoreButton": "Saiba mais"
     },
     "sections": {
       "categories": "Comprar por categoria"
+    },
+    "categories": {
+      "title": "Categorias de produtos"
+    },
+    "features": {
+      "title": "Por que Tejo-Beauty?"
+    },
+    "stats": {
+      "title": "Experimente a diferença",
+      "description": "Junte-se a milhares de clientes satisfeitos que já descobriram o poder dos ingredientes naturais em sua rotina de beleza."
     }
-  }
-  ,
+  },
   "nav": {
     "home": "Início",
     "shop": "Loja",
-    "about": "Sobre nós",
+    "about": "Sobre",
     "pro": "Pro",
     "blog": "Blog"
+  },
+  "about": {
+    "title": "Sobre Tejo-Beauty",
+    "fullText": "Tejo-Beauty é uma marca que define um novo nível de padrões de beleza. Nosso foco é expertise, qualidade e experiência — para usuários finais e profissionais de beleza. Nossa filosofia é baseada na disponibilidade de produtos altamente eficazes que atendem aos mais altos critérios estéticos e funcionais. Seja você curando seu próprio canto de beleza ou equipando um salão, Tejo-Beauty é o lugar onde expertise e estilo se tornam um."
+  },
+  "pro": {
+    "title": "Para profissionais e salões",
+    "subtitle": "Junte-se ao nosso programa profissional para melhores preços, suporte e acesso exclusivo.",
+    "benefits": [ "Seleção especializada", "Preços em camadas e fidelidade", "Suporte prioritário", "Recursos educacionais" ],
+    "contact": { "title": "Contato", "desc": "Entre em contato conosco para detalhes da parceria." },
+    "cta": "Solicitar parceria"
+  },
+  "newsletter": {
+    "title": "Mantenha-se atualizado",
+    "subtitle": "Inscreva-se em nossa newsletter para ofertas exclusivas e dicas de beleza",
+    "placeholder": "Digite seu email",
+    "button": "Inscrever-se",
+    "success": "Obrigado por se inscrever!",
+    "error": "Algo deu errado. Por favor, tente novamente."
   }
 }
 

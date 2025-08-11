@@ -7,14 +7,26 @@
     "hero": {
       "title": "Beauty is not a luxury. Beauty is a standard.",
       "subtitle": "Tejo-Beauty is your trusted partner in the world of professional care and aesthetic excellence.",
+      "description": "Discover the best natural products for facial, body and hair care. Premium quality for your beauty and well-being.",
       "ctaPrimary": "Shop All Products",
-      "ctaSecondary": "Become a professional partner"
+      "ctaSecondary": "Become a professional partner",
+      "exploreButton": "Explore Products",
+      "learnMoreButton": "Learn More"
     },
     "sections": {
       "categories": "Shop by category"
+    },
+    "categories": {
+      "title": "Product Categories"
+    },
+    "features": {
+      "title": "Why Tejo-Beauty?"
+    },
+    "stats": {
+      "title": "Experience the Difference",
+      "description": "Join thousands of satisfied customers who have already discovered the power of natural ingredients in their beauty routine."
     }
-  }
-  ,
+  },
   "nav": {
     "home": "Home",
     "shop": "Shop",
@@ -32,6 +44,14 @@
     "benefits": [ "Expert selection", "Tiered pricing & loyalty", "Priority support", "Educational resources" ],
     "contact": { "title": "Contact", "desc": "Reach us for partnership details." },
     "cta": "Request partnership"
+  },
+  "newsletter": {
+    "title": "Stay Updated",
+    "subtitle": "Subscribe to our newsletter for exclusive offers and beauty tips",
+    "placeholder": "Enter your email",
+    "button": "Subscribe",
+    "success": "Thank you for subscribing!",
+    "error": "Something went wrong. Please try again."
   }
 }
 

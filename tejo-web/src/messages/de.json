@@ -1,26 +1,57 @@
 {
   "seo": {
     "defaultTitle": "Schönheit mit Bedeutung",
-    "defaultDescription": "Tejo-Beauty ist Ihr vertrauenswürdiger Partner für professionelle Pflege und ästhetische Exzellenz."
+    "defaultDescription": "Tejo-Beauty ist Ihr vertrauensvoller Partner für professionelle Pflege und ästhetische Exzellenz."
   },
   "home": {
     "hero": {
-      "title": "Schönheit ist kein Luxus. Schönheit ist Standard.",
-      "subtitle": "Tejo-Beauty ist Ihr vertrauenswürdiger Partner in der Welt der professionellen Pflege und ästhetischen Exzellenz.",
-      "ctaPrimary": "Alle Produkte shoppen",
-      "ctaSecondary": "Werden Sie professioneller Partner"
+      "title": "Schönheit ist kein Luxus. Schönheit ist ein Standard.",
+      "subtitle": "Tejo-Beauty ist Ihr vertrauensvoller Partner in der Welt der professionellen Pflege und ästhetischen Exzellenz.",
+      "description": "Entdecken Sie die besten Naturprodukte für Gesichts-, Körper- und Haarpflege. Premium-Qualität für Ihre Schönheit und Ihr Wohlbefinden.",
+      "ctaPrimary": "Alle Produkte kaufen",
+      "ctaSecondary": "Werden Sie ein professioneller Partner",
+      "exploreButton": "Produkte erkunden",
+      "learnMoreButton": "Mehr erfahren"
     },
     "sections": {
-      "categories": "Nach Kategorie shoppen"
+      "categories": "Nach Kategorie einkaufen"
+    },
+    "categories": {
+      "title": "Produktkategorien"
+    },
+    "features": {
+      "title": "Warum Tejo-Beauty?"
+    },
+    "stats": {
+      "title": "Erleben Sie den Unterschied",
+      "description": "Schließen Sie sich Tausenden zufriedener Kunden an, die bereits die Kraft natürlicher Inhaltsstoffe in ihrer Schönheitsroutine entdeckt haben."
     }
-  }
-  ,
+  },
   "nav": {
-    "home": "Start",
+    "home": "Startseite",
     "shop": "Shop",
     "about": "Über uns",
     "pro": "Pro",
     "blog": "Blog"
+  },
+  "about": {
+    "title": "Über Tejo-Beauty",
+    "fullText": "Tejo-Beauty ist eine Marke, die ein neues Niveau an Schönheitsstandards definiert. Unser Fokus liegt auf Expertise, Qualität und Erfahrung — für Endverbraucher und Schönheitsprofis. Unsere Philosophie basiert auf der Verfügbarkeit hochwirksamer Produkte, die die höchsten ästhetischen und funktionalen Kriterien erfüllen. Ob Sie Ihre eigene Schönheitsecke kuratieren oder einen Salon ausstatten, Tejo-Beauty ist der Ort, an dem Expertise und Stil eins werden."
+  },
+  "pro": {
+    "title": "Für Profis und Salons",
+    "subtitle": "Treten Sie unserem professionellen Programm für bessere Preise, Support und exklusiven Zugang bei.",
+    "benefits": [ "Expertenauswahl", "Gestaffelte Preise & Treue", "Prioritäts-Support", "Bildungsressourcen" ],
+    "contact": { "title": "Kontakt", "desc": "Kontaktieren Sie uns für Partnerschaftsdetails." },
+    "cta": "Partnerschaft anfordern"
+  },
+  "newsletter": {
+    "title": "Bleiben Sie auf dem Laufenden",
+    "subtitle": "Abonnieren Sie unseren Newsletter für exklusive Angebote und Schönheitstipps",
+    "placeholder": "Geben Sie Ihre E-Mail ein",
+    "button": "Abonnieren",
+    "success": "Vielen Dank für Ihr Abonnement!",
+    "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
   }
 }
 

@@ -7,14 +7,26 @@
     "hero": {
       "title": "Ljepota nije luksuz. Ljepota je standard.",
       "subtitle": "Tejo-Beauty je tvoj pouzdani partner u svijetu profesionalne njege i estetske izvrsnosti.",
+      "description": "Otkrijte najbolje prirodne proizvode za njegu lica, tijela i kose. Premium kvaliteta za vašu ljepotu i dobrobit.",
       "ctaPrimary": "Shop All Products",
-      "ctaSecondary": "Postani profesionalni partner"
+      "ctaSecondary": "Postani profesionalni partner",
+      "exploreButton": "Istraži proizvode",
+      "learnMoreButton": "Saznaj više"
     },
     "sections": {
       "categories": "Kupi po kategoriji"
+    },
+    "categories": {
+      "title": "Kategorije proizvoda"
+    },
+    "features": {
+      "title": "Zašto Tejo-Beauty?"
+    },
+    "stats": {
+      "title": "Iskusite razliku",
+      "description": "Pridružite se tisućama zadovoljnih kupaca koji su već otkrili snagu prirodnih sastojaka u njihovoj rutini ljepote."
     }
-  }
-  ,
+  },
   "nav": {
     "home": "Početna",
     "shop": "Shop",
@@ -32,6 +44,14 @@
     "benefits": [ "Stručna selekcija", "Tierski cjenici i loyalty", "Prioritetna podrška", "Edukativni resursi" ],
     "contact": { "title": "Kontakt", "desc": "Javi nam se za detalje partnerstva." },
     "cta": "Zatraži partnerstvo"
+  },
+  "newsletter": {
+    "title": "Ostanite informirani",
+    "subtitle": "Pretplatite se na naš newsletter za ekskluzivne ponude i beauty savjete",
+    "placeholder": "Unesite svoj email",
+    "button": "Pretplati se",
+    "success": "Hvala vam na pretplati!",
+    "error": "Nešto je pošlo po zlu. Molimo pokušajte ponovno."
   }
 }
 

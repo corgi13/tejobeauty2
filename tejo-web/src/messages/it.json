@@ -7,20 +7,51 @@
     "hero": {
       "title": "La bellezza non è un lusso. La bellezza è uno standard.",
       "subtitle": "Tejo-Beauty è il tuo partner di fiducia nel mondo della cura professionale e dell'eccellenza estetica.",
-      "ctaPrimary": "Tutti i prodotti",
-      "ctaSecondary": "Diventa partner professionale"
+      "description": "Scopri i migliori prodotti naturali per la cura del viso, del corpo e dei capelli. Qualità premium per la tua bellezza e benessere.",
+      "ctaPrimary": "Acquista tutti i prodotti",
+      "ctaSecondary": "Diventa un partner professionale",
+      "exploreButton": "Esplora prodotti",
+      "learnMoreButton": "Scopri di più"
     },
     "sections": {
       "categories": "Acquista per categoria"
+    },
+    "categories": {
+      "title": "Categorie di prodotti"
+    },
+    "features": {
+      "title": "Perché Tejo-Beauty?"
+    },
+    "stats": {
+      "title": "Sperimenta la differenza",
+      "description": "Unisciti a migliaia di clienti soddisfatti che hanno già scoperto il potere degli ingredienti naturali nella loro routine di bellezza."
     }
-  }
-  ,
+  },
   "nav": {
     "home": "Home",
-    "shop": "Shop",
+    "shop": "Negozio",
     "about": "Chi siamo",
     "pro": "Pro",
     "blog": "Blog"
+  },
+  "about": {
+    "title": "Chi è Tejo-Beauty",
+    "fullText": "Tejo-Beauty è un marchio che definisce un nuovo livello di standard di bellezza. Il nostro focus è l'esperienza, la qualità e l'esperienza — per utenti finali e professionisti della bellezza. La nostra filosofia si basa sulla disponibilità di prodotti altamente efficaci che soddisfano i più alti criteri estetici e funzionali. Che tu stia curando il tuo angolo di bellezza o equipaggiando un salone, Tejo-Beauty è il posto dove esperienza e stile diventano uno."
+  },
+  "pro": {
+    "title": "Per professionisti e saloni",
+    "subtitle": "Unisciti al nostro programma professionale per prezzi migliori, supporto e accesso esclusivo.",
+    "benefits": [ "Selezione esperta", "Prezzi a livelli e fedeltà", "Supporto prioritario", "Risorse educative" ],
+    "contact": { "title": "Contatto", "desc": "Contattaci per i dettagli della partnership." },
+    "cta": "Richiedi partnership"
+  },
+  "newsletter": {
+    "title": "Rimani aggiornato",
+    "subtitle": "Iscriviti alla nostra newsletter per offerte esclusive e consigli di bellezza",
+    "placeholder": "Inserisci la tua email",
+    "button": "Iscriviti",
+    "success": "Grazie per esserti iscritto!",
+    "error": "Qualcosa è andato storto. Per favore riprova."
   }
 }
 
