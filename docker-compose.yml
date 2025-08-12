@@ -9,11 +9,13 @@ services:
       POSTGRES_USER: tejo
       POSTGRES_PASSWORD: tejopass123
       POSTGRES_DB: tejobeauty
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./tejo-api/prisma/schema.prisma:/docker-entrypoint-initdb.d/schema.prisma
+      - ./tejo-api/prisma/migrations:/docker-entrypoint-initdb.d/migrations
     networks:
       - tejo-network
     healthcheck:
@@ -21,23 +23,42 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    command: >
+      postgres
+      -c shared_preload_libraries=pg_stat_statements
+      -c pg_stat_statements.track=all
+      -c max_connections=200
+      -c shared_buffers=256MB
+      -c effective_cache_size=1GB
 
   # Redis for caching and queue
   redis:
     image: redis:7-alpine
     container_name: tejo-redis
-    command: redis-server --appendonly yes
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
+      - ./tejo-infra/redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - tejo-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 30s
+    restart: unless-stopped
 
   # Meilisearch for search functionality
   meilisearch:
@@ -46,10 +67,15 @@ services:
     environment:
       MEILI_MASTER_KEY: "tejoMasterKey123"
       MEILI_ENV: "development"
+      MEILI_HTTP_ADDR: "0.0.0.0:7700"
+      MEILI_LOG_LEVEL: "INFO"
+      MEILI_MAX_INDEX_SIZE: "10GB"
+      MEILI_MAX_DB_SIZE: "20GB"
     ports:
       - "7700:7700"
     volumes:
       - meilisearch_data:/meili_data
+      - ./tejo-infra/meilisearch/data.ms:/meili_data/data.ms
     networks:
       - tejo-network
     healthcheck:
@@ -57,12 +83,16 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 30s
+    restart: unless-stopped
 
   # Backend API
   tejo-api:
     build:
       context: ./tejo-api
       dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
     container_name: tejo-api
     environment:
       - NODE_ENV=development
@@ -70,13 +100,15 @@ services:
       - REDIS_URL=redis://redis:6379
       - MEILISEARCH_URL=http://meilisearch:7700
       - MEILISEARCH_KEY=tejoMasterKey123
-      - JWT_SECRET=tejoJwtSecret123
+      - JWT_SECRET=tejoJwtSecret123456789012345678901234567890
       - PORT=4000
       - CLOUDINARY_CLOUD_NAME=your_cloud_name
       - CLOUDINARY_API_KEY=your_api_key
       - CLOUDINARY_API_SECRET=your_api_secret
       - STRIPE_SECRET_KEY=sk_test_your_stripe_key
       - MOLLIE_API_KEY=test_your_mollie_key
+      - FRONTEND_ORIGIN=http://localhost:3000
+      - LOG_LEVEL=debug
     ports:
       - "4000:4000"
     depends_on:
@@ -91,24 +123,38 @@ services:
     volumes:
       - ./tejo-api:/app
       - /app/node_modules
+      - ./logs:/app/logs
     command: >
       sh -c "
-        npm run prisma:deploy &&
+        echo 'Waiting for services to be ready...' &&
+        sleep 10 &&
         npm run prisma:generate &&
+        npm run prisma:deploy &&
         npm run start:dev
       "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/api/v1/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
 
   # Background Worker
   tejo-worker:
     build:
       context: ./tejo-worker
       dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
     container_name: tejo-worker
     environment:
       - NODE_ENV=development
       - REDIS_URL=redis://redis:6379
       - MEILISEARCH_URL=http://meilisearch:7700
       - MEILISEARCH_KEY=tejoMasterKey123
+      - API_BASE_URL=http://tejo-api:4000
+      - LOG_LEVEL=info
     depends_on:
       - redis
       - meilisearch
@@ -118,31 +164,126 @@ services:
     volumes:
       - ./tejo-worker:/app
       - /app/node_modules
+      - ./logs:/app/logs
+    command: npm run dev
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "worker.ts"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
 
   # Frontend Web App
   tejo-web:
     build:
       context: ./tejo-web
       dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
     container_name: tejo-web
     environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://tejo-beauty.com/api
-      - NEXT_PUBLIC_SITE_URL=https://tejo-beauty.com
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
+      - NEXT_PUBLIC_SITE_URL=http://localhost:3000
       - REVALIDATE_SECRET=tejoRevalidateSecret123
+      - NEXT_TELEMETRY_DISABLED=1
     ports:
       - "3000:3000"
     depends_on:
       - tejo-api
     networks:
       - tejo-network
-    # No volumes for production-like run to preserve built assets inside the image
+    volumes:
+      - ./tejo-web:/app
+      - /app/node_modules
+      - ./tejo-web/.next:/app/.next
+    command: npm run dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/en"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: tejo-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./tejo-infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./tejo-infra/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./tejo-infra/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - tejo-web
+      - tejo-api
+    networks:
+      - tejo-network
+    restart: unless-stopped
+    profiles:
+      - production
+
+  # Monitoring Stack (Optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: tejo-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./tejo-infra/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - tejo-network
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: tejo-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./tejo-infra/monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./tejo-infra/monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - tejo-network
+    restart: unless-stopped
+    profiles:
+      - monitoring
 
 networks:
   tejo-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
 
 volumes:
   postgres_data:
+    driver: local
   redis_data:
+    driver: local
   meilisearch_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  logs:
+    driver: local

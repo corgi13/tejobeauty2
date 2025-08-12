@@ -7,20 +7,51 @@
     "hero": {
       "title": "La belleza no es un lujo. La belleza es un estándar.",
       "subtitle": "Tejo-Beauty es tu socio de confianza en el mundo del cuidado profesional y la excelencia estética.",
-      "ctaPrimary": "Ver todos los productos",
-      "ctaSecondary": "Conviértete en socio profesional"
+      "description": "Descubre los mejores productos naturales para el cuidado facial, corporal y capilar. Calidad premium para tu belleza y bienestar.",
+      "ctaPrimary": "Comprar todos los productos",
+      "ctaSecondary": "Conviértete en socio profesional",
+      "exploreButton": "Explorar productos",
+      "learnMoreButton": "Saber más"
     },
     "sections": {
       "categories": "Comprar por categoría"
+    },
+    "categories": {
+      "title": "Categorías de productos"
+    },
+    "features": {
+      "title": "¿Por qué Tejo-Beauty?"
+    },
+    "stats": {
+      "title": "Experimenta la diferencia",
+      "description": "Únete a miles de clientes satisfechos que ya han descubierto el poder de los ingredientes naturales en su rutina de belleza."
     }
-  }
-  ,
+  },
   "nav": {
     "home": "Inicio",
     "shop": "Tienda",
-    "about": "Sobre nosotros",
+    "about": "Acerca de",
     "pro": "Pro",
     "blog": "Blog"
+  },
+  "about": {
+    "title": "Acerca de Tejo-Beauty",
+    "fullText": "Tejo-Beauty es una marca que define un nuevo nivel de estándares de belleza. Nuestro enfoque es la experiencia, calidad y experiencia — para usuarios finales y profesionales de la belleza. Nuestra filosofía se basa en la disponibilidad de productos altamente efectivos que cumplen con los más altos criterios estéticos y funcionales. Ya sea que estés curando tu propio rincón de belleza o equipando un salón, Tejo-Beauty es el lugar donde la experiencia y el estilo se convierten en uno."
+  },
+  "pro": {
+    "title": "Para profesionales y salones",
+    "subtitle": "Únete a nuestro programa profesional para mejores precios, soporte y acceso exclusivo.",
+    "benefits": [ "Selección experta", "Precios escalonados y lealtad", "Soporte prioritario", "Recursos educativos" ],
+    "contact": { "title": "Contacto", "desc": "Contáctanos para detalles de asociación." },
+    "cta": "Solicitar asociación"
+  },
+  "newsletter": {
+    "title": "Mantente actualizado",
+    "subtitle": "Suscríbete a nuestro boletín para ofertas exclusivas y consejos de belleza",
+    "placeholder": "Ingresa tu email",
+    "button": "Suscribirse",
+    "success": "¡Gracias por suscribirte!",
+    "error": "Algo salió mal. Por favor intenta de nuevo."
   }
 }
 
