@@ -11,7 +11,7 @@ const spinnerVariants = {
     transition: {
       duration: 1,
       repeat: Infinity,
-      ease: "linear",
+      ease: "linear" as const,
     },
   },
   pulse: {
@@ -20,7 +20,7 @@ const spinnerVariants = {
     transition: {
       duration: 1.5,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
   bounce: {
@@ -28,7 +28,7 @@ const spinnerVariants = {
     transition: {
       duration: 0.6,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
 };
@@ -69,7 +69,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
               duration: 1.4,
               repeat: Infinity,
               delay: i * 0.2,
-              ease: "easeInOut",
+              ease: "easeInOut" as const,
             }}
           />
         ))}
@@ -96,7 +96,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
               duration: 1.2,
               repeat: Infinity,
               delay: i * 0.1,
-              ease: "easeInOut",
+              ease: "easeInOut" as const,
             }}
           />
         ))}
@@ -377,7 +377,7 @@ export const PulseRing: React.FC<{ className?: string; size?: number }> = ({
       transition={{
         duration: 2,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: "easeInOut" as const,
       }}
     />
     <motion.div
@@ -389,7 +389,7 @@ export const PulseRing: React.FC<{ className?: string; size?: number }> = ({
       transition={{
         duration: 2,
         repeat: Infinity,
-        ease: "easeInOut",
+        ease: "easeInOut" as const,
         delay: 0.5,
       }}
     />
@@ -412,7 +412,7 @@ export const LoadingDots: React.FC<{ className?: string }> = ({ className }) => 
           duration: 1.4,
           repeat: Infinity,
           delay: i * 0.2,
-          ease: "easeInOut",
+          ease: "easeInOut" as const,
         }}
       />
     ))}
@@ -436,7 +436,7 @@ export const WaveLoading: React.FC<{ className?: string; bars?: number }> = ({
           duration: 1.2,
           repeat: Infinity,
           delay: i * 0.1,
-          ease: "easeInOut",
+          ease: "easeInOut" as const,
         }}
         style={{ height: 20 }}
       />

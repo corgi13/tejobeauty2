@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useApi } from 'src/hooks/useApi';
-import { formatPrice, formatDateTime } from 'src/utils/format';
+import { useApi } from '../../../src/hooks/useApi';
+import { formatPrice, formatDateTime } from '../../../src/utils/format';
 import { Package, Users, ShoppingCart, DollarSign } from 'lucide-react';
 
 interface DashboardStats {
@@ -149,22 +149,30 @@ export default function AdminDashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead>{t('orderNumber')}</TableHead>
-                <TableHead>{t('customer')}</TableHead>
+                <TableHead>{t('customerName')}</TableHead>
                 <TableHead>{t('total')}</TableHead>
                 <TableHead>{t('status')}</TableHead>
                 <TableHead>{t('date')}</TableHead>
+                <TableHead>{t('actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {stats.recentOrders.map((order) => (
+              {stats.recentOrders.map((order: any) => (
                 <TableRow key={order.id}>
-                  <TableCell className="font-medium">{order.orderNumber}</TableCell>
+                  <TableCell>{order.orderNumber}</TableCell>
                   <TableCell>{order.customerName}</TableCell>
                   <TableCell>{formatPrice(order.total)}</TableCell>
                   <TableCell>
-                    <Badge variant="outline">{order.status}</Badge>
+                    <Badge variant={order.status === 'completed' ? 'default' : 'secondary'}>
+                      {order.status}
+                    </Badge>
                   </TableCell>
                   <TableCell>{formatDateTime(order.createdAt)}</TableCell>
+                  <TableCell>
+                    <Button variant="outline" size="sm">
+                      {t('view')}
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -181,15 +189,15 @@ export default function AdminDashboard() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{t('product')}</TableHead>
+                <TableHead>{t('productName')}</TableHead>
                 <TableHead>{t('totalSold')}</TableHead>
                 <TableHead>{t('revenue')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {stats.topProducts.map((product) => (
+              {stats.topProducts.map((product: any) => (
                 <TableRow key={product.id}>
-                  <TableCell className="font-medium">{product.name}</TableCell>
+                  <TableCell>{product.name}</TableCell>
                   <TableCell>{product.totalSold}</TableCell>
                   <TableCell>{formatPrice(product.revenue)}</TableCell>
                 </TableRow>

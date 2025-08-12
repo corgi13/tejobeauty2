@@ -81,9 +81,10 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    const prevRevenue = previousMonthRevenue._sum?.totalAmount || 0;
+    const prevRevenue = Number(previousMonthRevenue._sum?.totalAmount || 0);
+    const currentMonthRevenueNum = Number(currentMonthRevenue);
     const growthPercentage = prevRevenue > 0 
-      ? ((currentMonthRevenue - prevRevenue) / prevRevenue) * 100 
+      ? ((currentMonthRevenueNum - prevRevenue) / prevRevenue) * 100 
       : 0;
 
     // Get top products

@@ -188,8 +188,11 @@ async function main() {
     prisma.order.create({
       data: {
         userId: adminUser.id,
+        customerName: 'Admin User',
+        customerEmail: 'admin@tejo.com',
+        customerPhone: '+385123456789',
         status: 'CONFIRMED',
-        total: 155.49,
+        totalAmount: 155.49,
         paymentMethod: 'card',
         shippingAddress: {
           street: '123 Main St',
@@ -218,8 +221,11 @@ async function main() {
     prisma.order.create({
       data: {
         userId: adminUser.id,
+        customerName: 'Admin User',
+        customerEmail: 'admin@tejo.com',
+        customerPhone: '+385123456789',
         status: 'SHIPPED',
-        total: 80.00,
+        totalAmount: 80.00,
         paymentMethod: 'card',
         shippingAddress: {
           street: '456 Oak Ave',
